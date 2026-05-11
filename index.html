@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Koljägarna</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="topbar" aria-label="Spelhuvud">
+        <div>
+          <p class="eyebrow">Högstadiet · NO · Klimat och kolcykel</p>
+          <h1>Koljägarna</h1>
+        </div>
+        <div class="top-actions">
+          <button class="ghost-button" id="rulesButton" type="button">Regler</button>
+          <button class="primary-button" id="newGameButton" type="button">Nytt spel</button>
+        </div>
+      </section>
+
+      <section class="score-strip" aria-label="Spelstatus">
+        <article class="metric-card atmosphere">
+          <span class="metric-label">Kol i atmosfären</span>
+          <strong id="atmosphereValue">420</strong>
+          <span class="metric-unit">ppm-ish</span>
+        </article>
+        <article class="metric-card stored">
+          <span class="metric-label">Lagrad kol</span>
+          <strong id="storedValue">80</strong>
+          <span class="metric-unit">kolpoäng</span>
+        </article>
+        <article class="metric-card climate">
+          <span class="metric-label">Ekosystemhälsa</span>
+          <strong id="climateValue">65</strong>
+          <span class="metric-unit">av 100</span>
+        </article>
+        <article class="metric-card economy">
+          <span class="metric-label">Kort sikt</span>
+          <strong id="economyValue">35</strong>
+          <span class="metric-unit">bekvämlighet</span>
+        </article>
+      </section>
+
+      <section class="game-layout">
+        <aside class="panel board-panel" aria-label="Spelbräde">
+          <div class="round-row">
+            <div>
+              <span class="panel-kicker">År</span>
+              <strong id="roundValue">1 / 8</strong>
+            </div>
+            <div class="temperature-pill">
+              <span>Temp</span>
+              <strong id="temperatureValue">+1.2°C</strong>
+            </div>
+          </div>
+
+          <div class="carbon-board" aria-hidden="true">
+            <div class="sky">
+              <div class="carbon-cloud cloud-one"></div>
+              <div class="carbon-cloud cloud-two"></div>
+              <div class="carbon-cloud cloud-three"></div>
+              <span class="sky-label">Atmosfär</span>
+            </div>
+            <div class="landscape">
+              <div class="factory">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="wetland">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="forest">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline" id="timeline"></div>
+
+          <div class="pending-box">
+            <span class="panel-kicker">Pågående lagring</span>
+            <div id="pendingProjects" class="pending-list"></div>
+          </div>
+        </aside>
+
+        <section class="panel play-panel" aria-label="Spelyta">
+          <div class="phase-header">
+            <div>
+              <span class="panel-kicker" id="phaseKicker">Välj kort</span>
+              <h2 id="phaseTitle">Lag Utsläpp börjar år 1</h2>
+            </div>
+            <p id="phaseCopy">Ta ett kort som ger kortsiktig nytta men flyttar kol till atmosfären.</p>
+          </div>
+
+          <div class="selected-row" id="selectedRow">
+            <div>
+              <span class="panel-kicker">Valda kort</span>
+              <p id="selectedText">Inga kort valda än.</p>
+            </div>
+            <button class="primary-button" id="resolveButton" type="button" disabled>Spela året</button>
+          </div>
+
+          <div class="card-grid" id="cardGrid"></div>
+        </section>
+
+        <aside class="panel log-panel" aria-label="Logg och poäng">
+          <div class="score-duel">
+            <div>
+              <span class="panel-kicker">Lag Utsläpp</span>
+              <strong id="emitterScore">0</strong>
+            </div>
+            <div>
+              <span class="panel-kicker">Lag Lagring</span>
+              <strong id="storageScore">0</strong>
+            </div>
+          </div>
+          <div class="status-message" id="statusMessage">
+            Utsläpp kan dra ifrån snabbt. Lagring behöver tid för att hinna ikapp.
+          </div>
+          <div class="log-list" id="gameLog"></div>
+        </aside>
+      </section>
+    </main>
+
+    <dialog id="rulesDialog">
+      <div class="dialog-inner">
+        <button class="close-button" id="closeRulesButton" type="button" aria-label="Stäng regler">×</button>
+        <h2>Så spelas Koljägarna</h2>
+        <p>
+          Spelet är en duell mellan två lag. Lag Utsläpp får starka poäng direkt genom konsumtion,
+          resor och fossil energi. Lag Lagring bygger våtmarker, skog, jord och vanor som fångar
+          kol över flera år.
+        </p>
+        <ol>
+          <li>Spela åtta år. Varje år väljer först Lag Utsläpp ett kort och sedan Lag Lagring ett kort.</li>
+          <li>Utsläppskort ger snabb poäng men höjer kolhalten och pressar ekosystemhälsan.</li>
+          <li>Lagringskort ger ofta mindre poäng först, men startar projekt som fortsätter lagra kol senare.</li>
+          <li>Efter år åtta räknas slutpoängen. Hög atmosfär och låg ekosystemhälsa ger straff för båda, men särskilt för Lag Utsläpp.</li>
+        </ol>
+        <p>
+          Klassrumsfrågan efteråt: vilka kort verkar rimliga, vilka saknas, och vad är egentligen
+          en rättvis poäng för kort sikt jämfört med lång sikt?
+        </p>
+      </div>
+    </dialog>
+
+    <script src="game.js"></script>
+  </body>
+</html>
