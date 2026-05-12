@@ -96,6 +96,11 @@ h2 {
   gap: 12px;
 }
 
+.top-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .primary-button,
 .ghost-button {
   min-height: 42px;
@@ -114,9 +119,19 @@ h2 {
   opacity: 0.45;
 }
 
+.ghost-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 .ghost-button {
   border: 1px solid var(--line);
   background: rgba(255, 253, 247, 0.72);
+}
+
+.wide-button {
+  width: 100%;
+  margin-bottom: 14px;
 }
 
 .score-strip {
@@ -614,6 +629,10 @@ dialog {
   background: transparent;
 }
 
+.summary-dialog {
+  width: min(980px, calc(100vw - 32px));
+}
+
 dialog::backdrop {
   background: rgba(23, 33, 29, 0.46);
 }
@@ -653,6 +672,125 @@ dialog::backdrop {
   line-height: 1;
 }
 
+.summary-inner {
+  max-height: min(820px, calc(100vh - 32px));
+  overflow: auto;
+}
+
+.summary-heading,
+.summary-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.summary-heading {
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  margin-bottom: 18px;
+  padding-right: 40px;
+}
+
+.summary-grid {
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+}
+
+.projection-chart {
+  min-height: 270px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fbf7eb;
+}
+
+.projection-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.projection-chart text {
+  fill: var(--muted);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.legend-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend {
+  width: 18px;
+  height: 5px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.atmosphere-line {
+  background: var(--danger);
+}
+
+.climate-line {
+  background: var(--water);
+}
+
+.needs-line {
+  background: var(--sun);
+}
+
+.summary-list {
+  display: grid;
+  gap: 10px;
+}
+
+.summary-item {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: #fffdf7;
+}
+
+.summary-item strong {
+  font-size: 1.55rem;
+}
+
+.summary-item span {
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.reflection-box {
+  margin-top: 16px;
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--ink);
+  color: #fffaf0;
+}
+
+.reflection-box .panel-kicker,
+.reflection-box p {
+  color: #fffaf0;
+}
+
+.reflection-box p {
+  line-height: 1.45;
+}
+
 @media (max-width: 1120px) {
   .game-layout {
     grid-template-columns: 300px 1fr;
@@ -682,11 +820,27 @@ dialog::backdrop {
 
   .top-actions {
     width: 100%;
+    justify-content: stretch;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .top-actions button,
   .selected-row button {
-    flex: 1;
+    min-width: 0;
+  }
+
+  .selected-row button {
+    width: 100%;
+  }
+
+  .summary-heading,
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-heading {
+    padding-right: 40px;
   }
 
   .score-strip,

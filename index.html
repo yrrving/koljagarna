@@ -14,6 +14,7 @@
           <h1>Koljägarna</h1>
         </div>
         <div class="top-actions">
+          <button class="ghost-button" id="classModeButton" type="button">Klassläge</button>
           <button class="ghost-button" id="rulesButton" type="button">Regler</button>
           <button class="primary-button" id="newGameButton" type="button">Nytt spel</button>
         </div>
@@ -36,9 +37,9 @@
           <span class="metric-unit">av 100</span>
         </article>
         <article class="metric-card economy">
-          <span class="metric-label">Kort sikt</span>
+          <span class="metric-label">Grundbehov</span>
           <strong id="economyValue">35</strong>
-          <span class="metric-unit">bekvämlighet</span>
+          <span class="metric-unit">livsbalans</span>
         </article>
       </section>
 
@@ -124,6 +125,7 @@
           <div class="status-message" id="statusMessage">
             Utsläpp kan dra ifrån snabbt. Lagring behöver tid för att hinna ikapp.
           </div>
+          <button class="ghost-button wide-button" id="summaryButton" type="button" disabled>Visa slutrapport</button>
           <div class="log-list" id="gameLog"></div>
         </aside>
       </section>
@@ -134,20 +136,49 @@
         <button class="close-button" id="closeRulesButton" type="button" aria-label="Stäng regler">×</button>
         <h2>Så spelas Koljägarna</h2>
         <p>
-          Spelet är en duell mellan två lag. Lag Utsläpp får starka poäng direkt genom konsumtion,
-          resor och fossil energi. Lag Lagring bygger våtmarker, skog, jord och vanor som fångar
-          kol över flera år.
+          Spelet är en duell mellan två lag. Lag Utsläpp får ofta starka poäng direkt genom
+          konsumtion, resor och fossil energi. Lag Lagring bygger våtmarker, skog, jord och vanor
+          som fångar kol över flera år, men vissa lösningar har också en resurskostnad.
         </p>
         <ol>
           <li>Spela åtta år. Varje år väljer först Lag Utsläpp ett kort och sedan Lag Lagring ett kort.</li>
-          <li>Utsläppskort ger snabb poäng men höjer kolhalten och pressar ekosystemhälsan.</li>
-          <li>Lagringskort ger ofta mindre poäng först, men startar projekt som fortsätter lagra kol senare.</li>
-          <li>Efter år åtta räknas slutpoängen. Hög atmosfär och låg ekosystemhälsa ger straff för båda, men särskilt för Lag Utsläpp.</li>
+          <li>Kort kan påverka kol i atmosfären, lagrat kol, ekosystemhälsa och mänskliga grundbehov.</li>
+          <li>En hållbar runda handlar inte om att välja bort allt, utan om att hålla både klimat och livsbalans inom rimliga gränser.</li>
+          <li>Efter år åtta visas en slutrapport med vad valen leder till på längre sikt.</li>
         </ol>
         <p>
           Klassrumsfrågan efteråt: vilka kort verkar rimliga, vilka saknas, och vad är egentligen
           en rättvis poäng för kort sikt jämfört med lång sikt?
         </p>
+      </div>
+    </dialog>
+
+    <dialog id="summaryDialog" class="summary-dialog">
+      <div class="dialog-inner summary-inner">
+        <button class="close-button" id="closeSummaryButton" type="button" aria-label="Stäng slutrapport">×</button>
+        <div class="summary-heading">
+          <div>
+            <span class="panel-kicker">Slutrapport</span>
+            <h2 id="summaryTitle">Åtta år senare</h2>
+          </div>
+          <button class="primary-button" id="playAgainButton" type="button">Spela igen</button>
+        </div>
+
+        <div class="summary-grid">
+          <article>
+            <span class="panel-kicker">Långtidsprojektion</span>
+            <div class="projection-chart" id="projectionChart" aria-label="Grafisk långtidsprojektion"></div>
+          </article>
+          <article>
+            <span class="panel-kicker">Vad gav vad?</span>
+            <div class="summary-list" id="summaryList"></div>
+          </article>
+        </div>
+
+        <div class="reflection-box">
+          <span class="panel-kicker">Klassfrågor</span>
+          <p id="reflectionText">Vilket val kändes rimligt på kort sikt men svårt att försvara på lång sikt?</p>
+        </div>
       </div>
     </dialog>
 
