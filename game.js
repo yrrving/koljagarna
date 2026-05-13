@@ -286,6 +286,8 @@ const elements = {
   summaryTitle: document.querySelector("#summaryTitle"),
   projectionChart: document.querySelector("#projectionChart"),
   summaryList: document.querySelector("#summaryList"),
+  teamComparison: document.querySelector("#teamComparison"),
+  improvementList: document.querySelector("#improvementList"),
   reflectionText: document.querySelector("#reflectionText"),
   rulesDialog: document.querySelector("#rulesDialog"),
   rulesButton: document.querySelector("#rulesButton"),
@@ -464,6 +466,13 @@ function resolveYear() {
     emitter: emitter.name,
     storage: storage.name,
     netCarbon: emitter.carbon + storage.carbon,
+    emitterCarbon: emitter.carbon,
+    emitterComfort: emitter.comfort,
+    emitterNeeds: emitter.needs,
+    storageCarbon: storage.carbon,
+    storageStored: storage.stored,
+    storageDelayed: storage.delayedStore,
+    storageNeeds: storage.needs,
   });
 
   const maturedText = matured.length
@@ -647,6 +656,35 @@ function lineSvg(points, key, color, min, max) {
   return `<path d="${path}" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round" />`;
 }
 
+function sumHistory(key) {
+  return state.history.reduce((total, year) => total + year[key], 0);
+}
+
+function cardUseCount(teamKey, cardName) {
+  return state.history.filter((year) => year[teamKey] === cardName).length;
+}
+
+function improvementCopy() {
+  const highestEmitterYear = [...state.history].sort((a, b) => b.emitterCarbon - a.emitterCarbon)[0];
+  const lowerEmitterChoice = emitterCards
+    .filter((card) => card.carbon < (highestEmitterYear?.emitterCarbon ?? 999))
+    .sort((a, b) => a.carbon - b.carbon || b.needs - a.needs)[0];
+
+  const emitterTip =
+    highestEmitterYear && lowerEmitterChoice
+      ? `Byt ut "${highestEmitterYear.emitter}" någon runda mot "${lowerEmitterChoice.name}". Då finns fortfarande nytta eller glädje kvar, men koltrycket blir lägre.`
+      : "Fortsätt leta efter val som möter behov utan att skapa ny konsumtion varje gång.";
+
+  const storageUsedBest = storageCards
+    .map((card) => ({ ...card, uses: cardUseCount("storage", card.name) }))
+    .sort((a, b) => a.uses - b.uses || b.delayedStore + b.stored - (a.delayedStore + a.stored))[0];
+  const storageTip = storageUsedBest
+    ? `Spela "${storageUsedBest.name}" tidigare eller oftare. Lagring vinner mycket på tid, även när första effekten inte ser så stor ut.`
+    : "Välj ett långsamt projekt tidigt och låt det hinna arbeta innan sluträkningen.";
+
+  return { emitterTip, storageTip };
+}
+
 function renderSummary() {
   const points = projectionPoints();
   const last = points[points.length - 1];
@@ -686,10 +724,50 @@ function renderSummary() {
     <div class="summary-item"><strong>${leastCarbon?.round ?? "-"}</strong><span>bästa kolåret: ${leastCarbon?.storage ?? "saknas"}</span></div>
   `;
 
+  const emitterCarbon = sumHistory("emitterCarbon");
+  const emitterComfort = sumHistory("emitterComfort");
+  const emitterNeeds = sumHistory("emitterNeeds");
+  const storageCarbon = sumHistory("storageCarbon");
+  const storageStored = sumHistory("storageStored") + sumHistory("storageDelayed");
+  const storageNeeds = sumHistory("storageNeeds");
+  const carbonGap = emitterCarbon + storageCarbon;
+  const storageShare = Math.round((storageStored / Math.max(1, emitterCarbon + storageStored)) * 100);
+  const { emitterTip, storageTip } = improvementCopy();
+
+  elements.teamComparison.innerHTML = `
+    <div class="team-card emitter-team">
+      <strong>Lag Utsläpp</strong>
+      <span>${signed(emitterCarbon)} kol från sina val</span>
+      <span>${signed(emitterComfort)} kortsiktig poäng</span>
+      <span>${signed(emitterNeeds)} grundbehov/livsbalans</span>
+    </div>
+    <div class="team-card storage-team">
+      <strong>Lag Lagring</strong>
+      <span>${signed(storageCarbon)} kol direkt</span>
+      <span>${storageStored} kol lagrat eller på väg att lagras</span>
+      <span>${signed(storageNeeds)} grundbehov/livsbalans</span>
+    </div>
+    <div class="team-delta">
+      <strong>${signed(carbonGap)} nettokol efter lagens val</strong>
+      <span>Lagringssidan matchade ungefär ${storageShare}% av utsläppssidans koltryck med lagring och fördröjd effekt.</span>
+    </div>
+  `;
+
+  elements.improvementList.innerHTML = `
+    <div class="improvement-item">
+      <strong>Lag Utsläpp</strong>
+      <p>${emitterTip}</p>
+    </div>
+    <div class="improvement-item">
+      <strong>Lag Lagring</strong>
+      <p>${storageTip}</p>
+    </div>
+  `;
+
   elements.reflectionText.textContent =
     last.atmosphere > state.atmosphere + 25
-      ? "Projektionen fortsätter åt fel håll. Vilka val gav hög livskvalitet utan att bygga fast mer utsläpp?"
-      : "Projektionen planar ut. Vilka uppoffringar var rimliga, och vilka behov måste samhället ändå lösa?";
+      ? "Projektionen fortsätter åt fel håll, men båda lag kan fortfarande förbättra nästa omgång. Vilket byte ger mest effekt utan att ta bort viktiga behov?"
+      : "Projektionen planar ut. Vilket lag gjorde den viktigaste förbättringen, och vad kan det andra laget lära av det?";
 }
 
 function openSummary() {

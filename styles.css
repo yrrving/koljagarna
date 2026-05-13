@@ -678,7 +678,8 @@ dialog::backdrop {
 }
 
 .summary-heading,
-.summary-grid {
+.summary-grid,
+.team-summary-grid {
   display: grid;
   gap: 16px;
 }
@@ -692,6 +693,11 @@ dialog::backdrop {
 
 .summary-grid {
   grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+}
+
+.team-summary-grid {
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+  margin-top: 16px;
 }
 
 .projection-chart {
@@ -774,6 +780,68 @@ dialog::backdrop {
   line-height: 1.3;
 }
 
+.team-comparison,
+.improvement-list {
+  display: grid;
+  gap: 10px;
+}
+
+.team-card,
+.team-delta,
+.improvement-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #fffdf7;
+}
+
+.team-card {
+  display: grid;
+  grid-template-columns: 130px repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+.team-card strong,
+.team-delta strong,
+.improvement-item strong {
+  line-height: 1.2;
+}
+
+.team-card span,
+.team-delta span,
+.improvement-item p {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.team-card span {
+  border-radius: 999px;
+  padding: 6px 8px;
+  background: #f0eadf;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.emitter-team {
+  border-left: 6px solid var(--danger);
+}
+
+.storage-team {
+  border-left: 6px solid var(--moss);
+}
+
+.team-delta {
+  display: grid;
+  gap: 4px;
+  background: #fbf7eb;
+}
+
+.improvement-item {
+  display: grid;
+  gap: 6px;
+}
+
 .reflection-box {
   margin-top: 16px;
   border-radius: 8px;
@@ -835,12 +903,17 @@ dialog::backdrop {
   }
 
   .summary-heading,
-  .summary-grid {
+  .summary-grid,
+  .team-summary-grid {
     grid-template-columns: 1fr;
   }
 
   .summary-heading {
     padding-right: 40px;
+  }
+
+  .team-card {
+    grid-template-columns: 1fr;
   }
 
   .score-strip,
