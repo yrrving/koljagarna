@@ -8,6 +8,7 @@ const emitterCards = [
     needs: 3,
     climate: -7,
     icon: "plane",
+    evidence: "strong",
   },
   {
     id: "beef",
@@ -18,6 +19,7 @@ const emitterCards = [
     needs: 4,
     climate: -4,
     icon: "plate",
+    evidence: "strong",
   },
   {
     id: "motorway",
@@ -28,6 +30,7 @@ const emitterCards = [
     needs: 8,
     climate: -5,
     icon: "road",
+    evidence: "strong",
   },
   {
     id: "gas",
@@ -38,6 +41,7 @@ const emitterCards = [
     needs: 10,
     climate: -8,
     icon: "bolt",
+    evidence: "strong",
   },
   {
     id: "shopping",
@@ -48,6 +52,7 @@ const emitterCards = [
     needs: 2,
     climate: -3,
     icon: "bag",
+    evidence: "estimate",
   },
   {
     id: "grill",
@@ -58,6 +63,7 @@ const emitterCards = [
     needs: 5,
     climate: -2,
     icon: "flame",
+    evidence: "estimate",
   },
   {
     id: "traintrip",
@@ -68,6 +74,7 @@ const emitterCards = [
     needs: 7,
     climate: -1,
     icon: "train",
+    evidence: "strong",
   },
   {
     id: "wintercoat",
@@ -78,6 +85,7 @@ const emitterCards = [
     needs: 12,
     climate: -1,
     icon: "coat",
+    evidence: "estimate",
   },
   {
     id: "streaming",
@@ -88,6 +96,7 @@ const emitterCards = [
     needs: 4,
     climate: -1,
     icon: "screen",
+    evidence: "balance",
   },
   {
     id: "renovation",
@@ -98,6 +107,7 @@ const emitterCards = [
     needs: 3,
     climate: -4,
     icon: "hammer",
+    evidence: "estimate",
   },
 ];
 
@@ -114,6 +124,7 @@ const storageCards = [
     delay: 2,
     delayedStore: 24,
     icon: "wetland",
+    evidence: "strong",
   },
   {
     id: "forest",
@@ -127,6 +138,7 @@ const storageCards = [
     delay: 3,
     delayedStore: 32,
     icon: "tree",
+    evidence: "strong",
   },
   {
     id: "biochar",
@@ -140,6 +152,7 @@ const storageCards = [
     delay: 1,
     delayedStore: 12,
     icon: "soil",
+    evidence: "estimate",
   },
   {
     id: "foodwaste",
@@ -153,6 +166,7 @@ const storageCards = [
     delay: 1,
     delayedStore: 8,
     icon: "apple",
+    evidence: "strong",
   },
   {
     id: "meadow",
@@ -166,6 +180,7 @@ const storageCards = [
     delay: 2,
     delayedStore: 18,
     icon: "meadow",
+    evidence: "estimate",
   },
   {
     id: "bus",
@@ -179,6 +194,7 @@ const storageCards = [
     delay: 2,
     delayedStore: 14,
     icon: "bus",
+    evidence: "strong",
   },
   {
     id: "repaircafe",
@@ -192,6 +208,7 @@ const storageCards = [
     delay: 1,
     delayedStore: 7,
     icon: "wrench",
+    evidence: "estimate",
   },
   {
     id: "veggieparty",
@@ -205,6 +222,7 @@ const storageCards = [
     delay: 1,
     delayedStore: 4,
     icon: "apple",
+    evidence: "balance",
   },
   {
     id: "ebike",
@@ -218,6 +236,7 @@ const storageCards = [
     delay: 2,
     delayedStore: 18,
     icon: "bike",
+    evidence: "estimate",
   },
   {
     id: "reuse",
@@ -231,6 +250,7 @@ const storageCards = [
     delay: 1,
     delayedStore: 6,
     icon: "shirt",
+    evidence: "estimate",
   },
 ];
 
@@ -279,6 +299,10 @@ const elements = {
   pendingProjects: document.querySelector("#pendingProjects"),
   gameLog: document.querySelector("#gameLog"),
   classModeButton: document.querySelector("#classModeButton"),
+  evidenceButton: document.querySelector("#evidenceButton"),
+  inlineEvidenceButton: document.querySelector("#inlineEvidenceButton"),
+  evidenceDialog: document.querySelector("#evidenceDialog"),
+  closeEvidenceButton: document.querySelector("#closeEvidenceButton"),
   summaryButton: document.querySelector("#summaryButton"),
   summaryDialog: document.querySelector("#summaryDialog"),
   closeSummaryButton: document.querySelector("#closeSummaryButton"),
@@ -351,6 +375,12 @@ function signed(value) {
   return value > 0 ? `+${value}` : String(value);
 }
 
+function evidenceLabel(level) {
+  if (level === "strong") return "Starkt underlag";
+  if (level === "estimate") return "Rimlig förenkling";
+  return "Spelbalans";
+}
+
 function availableCards(deck) {
   if (deck === emitterCards) return state.emitterOffers[state.round - 1];
   return state.storageOffers[state.round - 1];
@@ -377,6 +407,7 @@ function renderCards() {
       return `
         <button class="card-button ${isEmitterPhase ? "is-emitter" : "is-storage"} ${selected ? "is-selected" : ""}" type="button" data-id="${card.id}">
           <span class="card-art">${renderIcon(card)}</span>
+          <span class="evidence-badge ${card.evidence}">${evidenceLabel(card.evidence)}</span>
           <h3>${card.name}</h3>
           <p>${card.description}</p>
           <span class="effect-list">${effects.map((effect) => `<span>${effect}</span>`).join("")}</span>
@@ -775,6 +806,10 @@ function openSummary() {
   elements.summaryDialog.showModal();
 }
 
+function openEvidence() {
+  elements.evidenceDialog.showModal();
+}
+
 function render() {
   renderMetrics();
   renderPhase();
@@ -799,6 +834,8 @@ function startNewGame() {
 elements.resolveButton.addEventListener("click", resolveYear);
 elements.newGameButton.addEventListener("click", startNewGame);
 elements.summaryButton.addEventListener("click", openSummary);
+elements.evidenceButton.addEventListener("click", openEvidence);
+elements.inlineEvidenceButton.addEventListener("click", openEvidence);
 elements.playAgainButton.addEventListener("click", () => {
   elements.summaryDialog.close();
   startNewGame();
@@ -809,9 +846,13 @@ elements.classModeButton.addEventListener("click", () => {
 });
 elements.rulesButton.addEventListener("click", () => elements.rulesDialog.showModal());
 elements.closeRulesButton.addEventListener("click", () => elements.rulesDialog.close());
+elements.closeEvidenceButton.addEventListener("click", () => elements.evidenceDialog.close());
 elements.closeSummaryButton.addEventListener("click", () => elements.summaryDialog.close());
 elements.rulesDialog.addEventListener("click", (event) => {
   if (event.target === elements.rulesDialog) elements.rulesDialog.close();
+});
+elements.evidenceDialog.addEventListener("click", (event) => {
+  if (event.target === elements.evidenceDialog) elements.evidenceDialog.close();
 });
 elements.summaryDialog.addEventListener("click", (event) => {
   if (event.target === elements.summaryDialog) elements.summaryDialog.close();

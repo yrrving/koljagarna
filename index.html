@@ -15,6 +15,7 @@
         </div>
         <div class="top-actions">
           <button class="ghost-button" id="classModeButton" type="button">Klassläge</button>
+          <button class="ghost-button" id="evidenceButton" type="button">Underlag</button>
           <button class="ghost-button" id="rulesButton" type="button">Regler</button>
           <button class="primary-button" id="newGameButton" type="button">Nytt spel</button>
         </div>
@@ -41,6 +42,13 @@
           <strong id="economyValue">35</strong>
           <span class="metric-unit">livsbalans</span>
         </article>
+      </section>
+
+      <section class="model-note" aria-label="Modell och tillförlitlighet">
+        <strong>Förenklad spelmodell.</strong>
+        Utfallet visar riktningar och samband, inte exakta klimatberäkningar. Kortens siffror är en blandning av
+        forskningsstöd, rimliga förenklingar och spelbalans.
+        <button id="inlineEvidenceButton" type="button">Se underlag</button>
       </section>
 
       <section class="game-layout">
@@ -150,6 +158,40 @@
           Klassrumsfrågan efteråt: vilka kort verkar rimliga, vilka saknas, och vad är egentligen
           en rättvis poäng för kort sikt jämfört med lång sikt?
         </p>
+      </div>
+    </dialog>
+
+    <dialog id="evidenceDialog" class="evidence-dialog">
+      <div class="dialog-inner evidence-inner">
+        <button class="close-button" id="closeEvidenceButton" type="button" aria-label="Stäng underlag">×</button>
+        <h2>Underlag och tillförlitlighet</h2>
+        <p>
+          Koljägarna är inte en klimatkalkylator. Spelet använder etablerade samband som undervisningsmodell,
+          men de exakta poängen är förenklade för att en klass ska kunna spela, jämföra och diskutera.
+        </p>
+
+        <div class="evidence-grid">
+          <article>
+            <span class="evidence-badge strong">Starkt underlag</span>
+            <p>Riktningen stöds tydligt av forskning eller myndighetsunderlag, till exempel flyg, fossil energi, kött, matsvinn, vardagstransporter och återvätning.</p>
+          </article>
+          <article>
+            <span class="evidence-badge estimate">Rimlig förenkling</span>
+            <p>Sambandet är rimligt, men kortet blandar flera verkliga faktorer. Exakta siffror ska ses som uppskattningar.</p>
+          </article>
+          <article>
+            <span class="evidence-badge balance">Spelbalans</span>
+            <p>Värdet är extra justerat för att spelet ska fungera som duell. Det är användbart för diskussion, inte som faktautfall.</p>
+          </article>
+        </div>
+
+        <div class="source-list">
+          <span class="panel-kicker">Källor bakom riktningen</span>
+          <a href="https://www.ipcc.ch/report/ar6/wg3/chapter/summary-for-policymakers/" target="_blank" rel="noreferrer">IPCC AR6 WGIII: minskad efterfrågan, transporter, mat, mark och energi</a>
+          <a href="https://www.naturvardsverket.se/data-och-statistik/konsumtion/vaxthusgaser-konsumtionsbaserade-utslapp-per-person/" target="_blank" rel="noreferrer">Naturvårdsverket: konsumtionsbaserade utsläpp per person</a>
+          <a href="https://www.naturvardsverket.se/vagledning-och-stod/luft-och-klimat/berakna-klimatpaverkan/berakna-klimatpaverkan-utifran-ett-livscykelperspektiv/" target="_blank" rel="noreferrer">Naturvårdsverket: livscykelperspektiv för klimatpåverkan</a>
+          <a href="https://www.skogsstyrelsen.se/en/about-us/rewetting-of-drained-peat-soils" target="_blank" rel="noreferrer">Skogsstyrelsen: återvätning av dikad torvmark</a>
+        </div>
       </div>
     </dialog>
 
