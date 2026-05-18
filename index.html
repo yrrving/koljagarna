@@ -51,6 +51,24 @@
         <button id="inlineEvidenceButton" type="button">Se underlag</button>
       </section>
 
+      <section class="goal-strip" aria-label="Lag och målsättning">
+        <article>
+          <span class="panel-kicker">Lag Utsläpp</span>
+          <strong>Maxa nytta nu</strong>
+          <p>Samla kortsiktspoäng och möt behov snabbt, men försök undvika att slutläget blir omöjligt att försvara.</p>
+        </article>
+        <article>
+          <span class="panel-kicker">Lag Lagring</span>
+          <strong>Bygg hållbar framtid</strong>
+          <p>Lagra kol, skydda ekosystem och visa att livsbalans kan fungera även när effekten kommer långsamt.</p>
+        </article>
+        <article>
+          <span class="panel-kicker">Efter spelet</span>
+          <strong>Förklara förbättringen</strong>
+          <p>Båda lag kan få reflektionsbonus om de själva föreslår ett bättre nästa val och motiverar varför.</p>
+        </article>
+      </section>
+
       <section class="game-layout">
         <aside class="panel board-panel" aria-label="Spelbräde">
           <div class="round-row">
@@ -148,11 +166,17 @@
           konsumtion, resor och fossil energi. Lag Lagring bygger våtmarker, skog, jord och vanor
           som fångar kol över flera år, men vissa lösningar har också en resurskostnad.
         </p>
+        <p>
+          Lagen har olika spelmål: Utsläpp optimerar kortsiktig nytta, medan Lagring optimerar
+          långsiktig överlevnad och återhämtning. Klassen har ett större gemensamt mål: att förstå
+          vilka val som går att förbättra och varför.
+        </p>
         <ol>
           <li>Spela åtta år. Varje år väljer först Lag Utsläpp ett kort och sedan Lag Lagring ett kort.</li>
           <li>Kort kan påverka kol i atmosfären, lagrat kol, ekosystemhälsa och mänskliga grundbehov.</li>
           <li>En hållbar runda handlar inte om att välja bort allt, utan om att hålla både klimat och livsbalans inom rimliga gränser.</li>
           <li>Efter år åtta visas en slutrapport med vad valen leder till på längre sikt.</li>
+          <li>Båda lag kan få reflektionsbonus om de kan ge ett förbättringsförslag som klassen tycker håller.</li>
         </ol>
         <p>
           Klassrumsfrågan efteråt: vilka kort verkar rimliga, vilka saknas, och vad är egentligen
@@ -226,6 +250,18 @@
             <span class="panel-kicker">Nästa förbättring</span>
             <div class="improvement-list" id="improvementList"></div>
           </article>
+        </div>
+
+        <div class="reflection-bonus">
+          <div>
+            <span class="panel-kicker">Reflektionsbonus</span>
+            <h3>Kan laget föreslå en bättre åtgärd?</h3>
+            <p>Ge bonus när laget kan säga vad de skulle ändra nästa gång och varför det förbättrar både klimat, behov eller långsiktig riktning.</p>
+          </div>
+          <div class="bonus-actions">
+            <button class="ghost-button" id="emitterBonusButton" type="button">+8 till Lag Utsläpp</button>
+            <button class="ghost-button" id="storageBonusButton" type="button">+8 till Lag Lagring</button>
+          </div>
         </div>
 
         <div class="reflection-box">

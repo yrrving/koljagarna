@@ -312,6 +312,8 @@ const elements = {
   summaryList: document.querySelector("#summaryList"),
   teamComparison: document.querySelector("#teamComparison"),
   improvementList: document.querySelector("#improvementList"),
+  emitterBonusButton: document.querySelector("#emitterBonusButton"),
+  storageBonusButton: document.querySelector("#storageBonusButton"),
   reflectionText: document.querySelector("#reflectionText"),
   rulesDialog: document.querySelector("#rulesDialog"),
   rulesButton: document.querySelector("#rulesButton"),
@@ -340,6 +342,10 @@ function freshState() {
     classMode: false,
     pending: [],
     log: [],
+    reflectionBonus: {
+      emitter: false,
+      storage: false,
+    },
     finished: false,
     summaryShown: false,
   };
@@ -799,6 +805,11 @@ function renderSummary() {
     last.atmosphere > state.atmosphere + 25
       ? "Projektionen fortsätter åt fel håll, men båda lag kan fortfarande förbättra nästa omgång. Vilket byte ger mest effekt utan att ta bort viktiga behov?"
       : "Projektionen planar ut. Vilket lag gjorde den viktigaste förbättringen, och vad kan det andra laget lära av det?";
+
+  elements.emitterBonusButton.disabled = state.reflectionBonus.emitter;
+  elements.storageBonusButton.disabled = state.reflectionBonus.storage;
+  elements.emitterBonusButton.textContent = state.reflectionBonus.emitter ? "Bonus given till Lag Utsläpp" : "+8 till Lag Utsläpp";
+  elements.storageBonusButton.textContent = state.reflectionBonus.storage ? "Bonus given till Lag Lagring" : "+8 till Lag Lagring";
 }
 
 function openSummary() {
@@ -808,6 +819,26 @@ function openSummary() {
 
 function openEvidence() {
   elements.evidenceDialog.showModal();
+}
+
+function awardReflectionBonus(team) {
+  if (!state.finished || state.reflectionBonus[team]) return;
+  state.reflectionBonus[team] = true;
+  if (team === "emitter") {
+    state.emitterScore += 8;
+    state.log.unshift({
+      title: "Reflektionsbonus",
+      text: "Lag Utsläpp kunde föreslå en förbättrande åtgärd och motivera den.",
+    });
+  } else {
+    state.storageScore += 8;
+    state.log.unshift({
+      title: "Reflektionsbonus",
+      text: "Lag Lagring kunde föreslå en förbättrande åtgärd och motivera den.",
+    });
+  }
+  render();
+  renderSummary();
 }
 
 function render() {
@@ -836,6 +867,8 @@ elements.newGameButton.addEventListener("click", startNewGame);
 elements.summaryButton.addEventListener("click", openSummary);
 elements.evidenceButton.addEventListener("click", openEvidence);
 elements.inlineEvidenceButton.addEventListener("click", openEvidence);
+elements.emitterBonusButton.addEventListener("click", () => awardReflectionBonus("emitter"));
+elements.storageBonusButton.addEventListener("click", () => awardReflectionBonus("storage"));
 elements.playAgainButton.addEventListener("click", () => {
   elements.summaryDialog.close();
   startNewGame();
